@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--link rel="stylesheet" href="imu.css" -->
+    <script src="//cdn.jsdelivr.net/p5.js/0.3.8/p5.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/p5.js/0.3.8/addons/p5.dom.js"></script>
+    <script type="text/javascript">
+        /*
+         showData(), below, will get called whenever there is new Data
+         from the server. So there's no need for a draw() function:
+         */
+
+        function getIMUData () {
+            var requestString = "/imu/r";
+            loadStrings(requestString, showData);
+
+
+//            jQuery.ajax({
+//                type: "GET",
+////                url: "/imu?actionz=r",    //http://localhost:3000
+//                url: "/imu/r",    //http://localhost:3000
+//                contentType: "application/json; charset=utf-8",
+//                dataType: "json",
+//                success: function (data, status, jqXHR) {
+//                    // do something
+//                    console.log("got this back ->", data);
+//                    showData(data);
+//                },
+//
+//                error: function (jqXHR, status) {
+//                    console.log("badabing",status);
+//                    // error handler
+//                }
+//            });
+        }
+
+        function showData(data) {
+            // when the server returns, show the result in the div:
+            az.textContent = data.az ;
+            daz.textContent = data.daz ;
+            al.textContent = data.al ;
+            dal.textContent = data.dal ;
+        }
+    </script>
+</head>
+<body class="night">
+
+<table class="nightz" border="1">
+    <tr >
+        <td class="headz" colspan="4">WedgeMate&copy;</td>
+    </tr>
+    <tr>
+        <td class="headz" width="20%">Azimuth</td>
+        <td class="numberz" width="20%" id="az">-39.68874</td>
+        <td class="headz" width="10%">&Delta;</td>
+        <td class="numberz" width="20%" id="daz">-19.08207</td>
+    </tr>
+    <tr>
+        <td class="headz">Elevation</td>
+        <td class="numberz" id="al">5.55683</td>
+        <td class="headz">&Delta;</td>
+        <td class="numberz" id="dal">5.74398</td>
+    </tr>
+    <tr>
+        <td class="buttonz"><button onclick="javascript:getIMUData();">RESET</button></td>
+        <td class="buttonz">CALIBRATE</td>
+        <td class="buttonz">FREEZE</td>
+        <td class="buttonz"></td>
+    </tr>
+</table>
+<br />
+<br />
+<button onclick="javascript:getIMUData();">RESET</button>
+<br />
+</body>
+</html>

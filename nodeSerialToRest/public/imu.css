@@ -1,0 +1,62 @@
+td
+{
+    padding: 13px;
+}
+
+tr
+{
+    font-family: Arial;
+}
+
+tr.headz
+{
+    font-family: "Arial Black";
+    font-size: 18pt ;
+    text-align: center;
+    color: red;
+}
+
+td.buttonz
+{
+    font-family: "Arial Rounded MT Bold";
+    font-size: 18pt ;
+    text-align: center;
+    border-width: thick;
+}
+
+td.headz
+{
+    font-family: "Arial Black";
+    font-size: 18pt ;
+    text-align: center;
+    color: red;
+}
+
+tr.numberz
+{
+    font-size: 20pt ;
+    text-align: right;
+    color: red;
+}
+
+td.numberz
+{
+    font-size: 20pt ;
+    text-align: right;
+    color: red;
+}
+
+body.night
+{
+    background-color: black;
+    color: darkred ;
+}
+
+table.nightz
+{
+    border-color: darkred;
+    border-width: thick;
+    border-style: solid;
+    border-collapse: collapse;
+    width: 400px ;
+}

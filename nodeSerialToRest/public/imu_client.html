@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="imu.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="//cdn.jsdelivr.net/p5.js/0.3.8/p5.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/p5.js/0.3.8/addons/p5.dom.js"></script>
+    <script type="text/javascript">
+        /*
+         This script uses P5.js for simplifying display and network transactions.
+         For more on it, see http://p5js.org/
+         */
+
+        function setup() {
+            // initialize the behavior and position of the submit button:
+            $.ajax({
+                type: "GET",
+                url: "/imu/r",
+                success: function (data) {
+                    console.log("imu data asynch[" + data + "]");
+                    showIMUData(data) ;
+                },
+                error: function (res) {
+                    alert("Error: " + res.statusText);
+                }
+            });
+        }
+
+        function getData() {
+            // get the value of the channel box:
+            var channelNum = getElement("channel").value();
+            // check to see that it's a valid analog input channel:
+            if (channelNum >= 0 && channelNum < 6) {
+                // form a request string and make the request:
+                var requestString = "/analog/" + channelNum; // http://localhost:8080
+                loadStrings(requestString, showData);
+            } else {
+                // if the channel number's not valid, let the user know:
+                alert("choose a channel number between 0 and 5");
+            }
+        }
+
+        function getIMUData() {
+            // get the value of the channel box:
+                var requestString = "/imu/r" ; // http://localhost:8080
+                loadStrings(requestString, showIMUData);
+        }
+
+        // when the HTTP request from loadStrings() is done, set the sensor span
+        // with the new data received:
+        function showData(data) {
+            var sensor = getElement("sensorValue");
+            sensor.html(data);
+        }
+
+        function showIMUData(data) {
+            console.log("imu data returned to client["+ data + "]");
+
+            var obj = JSON.parse(data);
+
+            console.log("imu object extracted["+ obj + "]");
+
+            console.log("imu data: az["+ obj.az + "]");
+            var az = getElement("az") ;
+            az.html(obj.az) ;
+
+            var daz = getElement("daz") ;
+            var al = getElement("al") ;
+            var dal = getElement("dal") ;
+            daz.html(obj.daz) ;
+            al.html(obj.al) ;
+            dal.html(obj.dal) ;
+
+            var imu_data = getElement("IMUValue");
+            imu_data.html(data);
+        }
+
+    </script>
+</head>
+
+<body class="night">
+
+<table class="nightz" border="1">
+    <tr >
+        <td class="headz" colspan="4">WedgeMate&copy;</td>
+    </tr>
+    <tr>
+        <td class="headz" width="20%">Azimuth</td>
+        <td class="numberz" width="20%" ><span id="az"></span></td>
+        <td class="headz" width="10%">&Delta;</td>
+        <td class="numberz" width="20%"><span id="daz"></span></td>
+    </tr>
+    <tr>
+        <td class="headz">Elevation</td>
+        <td class="numberz"><span id="al"></span></td>
+        <td class="headz">&Delta;</td>
+        <td class="numberz"><span id="dal"></span></td>
+    </tr>
+    <tr>
+        <td class="buttonz"><button onclick="javascript:getIMUData();">RESET</button></td>
+        <td class="buttonz">CALIBRATE</td>
+        <td class="buttonz">FREEZE</td>
+        <td class="buttonz"></td>
+    </tr>
+</table>
+<br />
+<br />
+<br />
+Enter an analog channel number to read:
+<input type="text" id="channel" size=2>
+<span id="sensorValue"></span><br>
+<button onclick="javascript:getData();">Submit</button>
+<br />
+<br />
+<span id="IMUValue"></span><br>
+
+</body>
+</html>
